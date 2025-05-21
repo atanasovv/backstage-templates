@@ -1,0 +1,34 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: openshift-cluster-template
+  title: OpenShift Cluster Deployment
+spec:
+  parameters:
+    - title: Cluster Info
+      properties:
+        clusterName:
+          type: string
+        region:
+          type: string
+        version:
+          type: string
+  steps:
+    - id: fetch-base
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          clusterName: ${{ parameters.clusterName }}
+          region: ${{ parameters.region }}
+          version: ${{ parameters.version }}
+
+    - id: publish
+      name: Create PR
+      action: publish:github
+      input:
+        repoUrl: github.com?repo=my-infra-repo&owner=my-org
+        branchName: ${{ parameters.clusterName }}-${{ parameters.region }}
+        title: 'Provision cluster ${{ parameters.clusterName }}'
+        description: 'New OpenShift cluster deployment'
