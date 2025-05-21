@@ -13,6 +13,10 @@ spec:
           type: string
         version:
           type: string
+        number_of_nodes:
+          type: int
+        master_node_cpu:
+          type: int
   steps:
     - id: fetch-base
       name: Fetch Template
@@ -23,6 +27,8 @@ spec:
           clusterName: ${{ parameters.clusterName }}
           region: ${{ parameters.region }}
           version: ${{ parameters.version }}
+          number_of_nodes: ${{ parameters.number_of_nodes }}
+          master_node_cpu: ${{ parameters.master_node_cpu }}
 
     - id: publish
       name: Create PR
